@@ -36,7 +36,6 @@ contract Raffle is VRFConsumerBaseV2 {
     // error
     error Raffle__NotEnoughEthSent();
     error Raffle__TransferFailed();
-    error Raffle__RaffleNotOpen()
     // Type declaration
     enum RaffleState {
         OPEN,
@@ -84,9 +83,6 @@ contract Raffle is VRFConsumerBaseV2 {
         if (msg.value < i_enteranceFee) {
             revert Raffle__NotEnoughEthSent();
         }
-        if (s_raffleState != RaffleState.OPEN) {
-            revert Raffle__RaffleNotOpen();
-        }
         s_players.push(payable(msg.sender));
         //
         emit EnteredRaffle(msg.sender);
@@ -95,7 +91,6 @@ contract Raffle is VRFConsumerBaseV2 {
        if ((block.timestamp - s_lastTimeStamp) < i_interval) {
         revert();
         }
-        s_raffleState = RaffleState.CALCULATING; //
         uint256 requestId = i_vrfCoordinator.requestRandomWords(
             i_gasLane,
             i_subscriptionId,
@@ -119,7 +114,7 @@ contract Raffle is VRFConsumerBaseV2 {
         address payable recentWinner = s_players[indexOfWinner];
         s_recentWinner = recentWinner;
         // s_players = new address payable[](0);
-        s_raffleState = RaffleState.OPEN;
+        // s_raffleState = RaffleState.OPEN;
         // s_lastTimeStamp = block.timestamp;
         // emit WinnerPicked(recentWinner);
         (bool success, ) = recentWinner.call{value: address(this).balance}("");
