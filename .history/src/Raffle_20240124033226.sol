@@ -88,7 +88,7 @@ contract Raffle {
             i_subscriptionId,
             REQUEST_CONFIRMATIONS,
             i_callbackGasLimit,
-            NUM_WORDS
+            NUM_WORDS,
         );
     }
 

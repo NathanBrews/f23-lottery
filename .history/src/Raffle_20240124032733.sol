@@ -36,8 +36,8 @@ contract Raffle {
     // error
     error Raffle__NotEnoughEthSent();
     // State variable
-    uint16 private constant REQUEST_CONFIRMATIONS = 3;
-    uint32 private constant NUM_WORDS = 1;
+    uint256 private constant REQUEST_CONFIRMATIONS = 3;
+    uint256 private constant NUM_WORDS = 1;
     //
     uint256 private immutable i_enteranceFee;
     // @dev Duration of the lottery in seconds
@@ -45,7 +45,7 @@ contract Raffle {
     VRFCoordinatorV2Interface private immutable i_vrfCoordinator;
     bytes32 private immutable i_gasLane;
     uint64 private immutable i_subscriptionId;
-    uint32 private immutable i_callbackGasLimit;
+    uint32 private immutable i_callBackGasLimit;
     //
     address payable[] private s_players;
     uint256 private s_lastTimeStamp;
@@ -60,15 +60,15 @@ contract Raffle {
         address vrfCoordinator, 
         bytes32 gasLane,
         uint64 subscriptionId,
-        uint32 callbackGasLimit
+        uint32 callBackGasLimit
         ) {
         i_enteranceFee = entranceFee;
         i_interval = interval;
         i_vrfCoordinator = VRFCoordinatorV2Interface(vrfCoordinator);
         i_gasLane = gasLane;
         i_subscriptionId = subscriptionId;
-        i_callbackGasLimit = callbackGasLimit;
         s_lastTimeStamp = block.timestamp;
+        i_callBackGasLimit = callBackGasLimit;
     }
     function enterRaffle()  external payable {
         // require(msg.sender >= i_enteranceFee, "Not enough ETH sent!");
@@ -87,7 +87,7 @@ contract Raffle {
             i_gasLane,
             i_subscriptionId,
             REQUEST_CONFIRMATIONS,
-            i_callbackGasLimit,
+            i_callBackGasLimit,
             NUM_WORDS
         );
     }

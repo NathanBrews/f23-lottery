@@ -36,8 +36,8 @@ contract Raffle {
     // error
     error Raffle__NotEnoughEthSent();
     // State variable
-    uint16 private constant REQUEST_CONFIRMATIONS = 3;
-    uint32 private constant NUM_WORDS = 1;
+    uint256 private constant REQUEST_CONFIRMATIONS = 3;
+    uint256 private constant NUM_WORDS = 1;
     //
     uint256 private immutable i_enteranceFee;
     // @dev Duration of the lottery in seconds
@@ -46,7 +46,7 @@ contract Raffle {
     bytes32 private immutable i_gasLane;
     uint64 private immutable i_subscriptionId;
     uint32 private immutable i_callbackGasLimit;
-    //
+    /b
     address payable[] private s_players;
     uint256 private s_lastTimeStamp;
 
@@ -88,7 +88,7 @@ contract Raffle {
             i_subscriptionId,
             REQUEST_CONFIRMATIONS,
             i_callbackGasLimit,
-            NUM_WORDS
+    b      NUM_WORDS
         );
     }
 

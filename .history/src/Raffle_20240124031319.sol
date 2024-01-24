@@ -34,18 +34,17 @@ import {VRFCoordinatorV2Interface} from "@chainlink/contracts/src/v0.8/interface
  */
 contract Raffle {
     // error
-    error Raffle__NotEnoughEthSent();
+    error NotEnoughEthSent();
     // State variable
-    uint16 private constant REQUEST_CONFIRMATIONS = 3;
-    uint32 private constant NUM_WORDS = 1;
-    //
-    uint256 private immutable i_enteranceFee;
+    uint256 private constant REQUEST_CONFIRMATIONS = 3;
+    uint256 private constant NUM_WORDS= 1;
+    uint256 private immutable s_enteranceFee;
     // @dev Duration of the lottery in seconds
     uint256 private immutable i_interval;
-    VRFCoordinatorV2Interface private immutable i_vrfCoordinator;
-    bytes32 private immutable i_gasLane;
+    address private immutable i_vrfCoordinator;
+    byte32 private immutable i_gasLane;
     uint64 private immutable i_subscriptionId;
-    uint32 private immutable i_callbackGasLimit;
+    uint32 private immutable i_callBackGasLimit;
     //
     address payable[] private s_players;
     uint256 private s_lastTimeStamp;
@@ -58,19 +57,19 @@ contract Raffle {
         uint256 entranceFee, 
         uint256 interval,
         address vrfCoordinator, 
-        bytes32 gasLane,
+        byte32 gasLane,
         uint64 subscriptionId,
         uint32 callbackGasLimit
         ) {
         i_enteranceFee = entranceFee;
         i_interval = interval;
-        i_vrfCoordinator = VRFCoordinatorV2Interface(vrfCoordinator);
+        i_vrfCoordinator = vrfCoordinator;
         i_gasLane = gasLane;
         i_subscriptionId = subscriptionId;
-        i_callbackGasLimit = callbackGasLimit;
         s_lastTimeStamp = block.timestamp;
+        i_callBackGasLimit = callBackGasLimit;
     }
-    function enterRaffle()  external payable {
+    function enterRaffle()  external payable () {
         // require(msg.sender >= i_enteranceFee, "Not enough ETH sent!");
         if (msg.value < i_enteranceFee) {
             revert Raffle__NotEnoughEthSent();
@@ -79,8 +78,8 @@ contract Raffle {
         //
         emit EnteredRaffle(msg.sender);
     }
-    function pickWinner() external {
-       if ((block.timestamp - s_lastTimeStamp) < i_interval) {
+    function pickWinner() public () {
+       if (block.timpStamp - s_lastTimeStamp < i_interval) {
         revert();
         }
         uint256 requestId = i_vrfCoordinator.requestRandomWords(

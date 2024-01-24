@@ -46,7 +46,7 @@ contract Raffle {
     bytes32 private immutable i_gasLane;
     uint64 private immutable i_subscriptionId;
     uint32 private immutable i_callbackGasLimit;
-    //
+    /b
     address payable[] private s_players;
     uint256 private s_lastTimeStamp;
 
@@ -88,7 +88,7 @@ contract Raffle {
             i_subscriptionId,
             REQUEST_CONFIRMATIONS,
             i_callbackGasLimit,
-            NUM_WORDS
+    b      NUM_WORDS
         );
     }
 
