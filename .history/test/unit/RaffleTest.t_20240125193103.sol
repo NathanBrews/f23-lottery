@@ -12,7 +12,6 @@ import {Test, console} from "forge-std/Test.sol";
 // import {CreateSubscription} from "../../script/Interactions.s.sol";
 
 contract RaffleTest is Test  {
-    event EnteredRaffle(address indexed player);
     Raffle raffle;
     HelperConfig helperConfig;
 
@@ -37,7 +36,6 @@ contract RaffleTest is Test  {
             callbackGasLimit
             )
          = helperConfig.activeNetworkConfig();
-         // fund
          vm.deal(PLAYER, STARTING_USER_BALANCE);
     }
     function testRaffleInitializesInOpenState() public view {
@@ -54,30 +52,10 @@ contract RaffleTest is Test  {
         // Arrange
         vm.prank(PLAYER);
         // Act
-        raffle.enterRaffle{value: entranceFee}();
+        raffle.enterRaffle{value: raffleEntranceFee}();
         // Assert
         address playerRecorded = raffle.getPlayer(0);
         assert(playerRecorded == PLAYER);
-    }
-    function testEmitsEventOnEntrance() public {
-        // Arrange
-        vm.prank(PLAYER);
-
-        // Act / Assert
-        vm.expectEmit(true, false, false, false, address(raffle));
-        emit EnteredRaffle(PLAYER);
-        raffle.enterRaffle{value: entranceFee}();
-    }
-    function testCantEnterWhenRaffleIsCalculating() public {
-        vm.prank(PLAYER);
-        raffle.enterRaffle{value:entranceFee}();
-        vm.warp(block.timestamp + interval + 1);
-        vm.roll(block.number + 1);
-        raffle.performUpkeep("");
-
-        vm.expectRevert(Raffle.Raffle__RaffleNotOpen.selector);
-        vm.prank(PLAYER);
-        raffle.enterRaffle{value: entranceFee}();
     }
     /* Errors */
 }
