@@ -136,7 +136,7 @@ contract Raffle is VRFConsumerBaseV2 {
             );
         }
         s_raffleState = RaffleState.CALCULATING; //
-        i_vrfCoordinator.requestRandomWords(
+        uint256 requestId = i_vrfCoordinator.requestRandomWords(
             i_gasLane,
             i_subscriptionId,
             REQUEST_CONFIRMATIONS,

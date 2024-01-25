@@ -136,7 +136,7 @@ contract Raffle is VRFConsumerBaseV2 {
             );
         }
         s_raffleState = RaffleState.CALCULATING; //
-        i_vrfCoordinator.requestRandomWords(
+        uint256 requestId = i_vrfCoordinator.requestRandomWords(
             i_gasLane,
             i_subscriptionId,
             REQUEST_CONFIRMATIONS,
@@ -148,7 +148,7 @@ contract Raffle is VRFConsumerBaseV2 {
     function fulfillRandomWords(
         uint256 /* requestId */,
         uint256[] memory randomWords
-    ) internal override {
+    ) internal  {
         // s_players size 10
         // randomNumber 202
         // 202 % 10 ? what's doesn't divide evenly into 202?

@@ -24,7 +24,7 @@
 pragma solidity ^0.8.19;
 import {VRFCoordinatorV2Interface} from "@chainlink/contracts/src/v0.8/interfaces/VRFCoordinatorV2Interface.sol";
 import {VRFConsumerBaseV2} from "@chainlink/contracts/src/v0.8/VRFConsumerBaseV2.sol";
-import {AutomationCompatibleInterface} from "@chainlink/contracts/src/v0.8/interfaces/AutomationCompatibleInterface.sol";
+// import {AutomationCompatibleInterface} from "@chainlink/contracts/src/v0.8/interfaces/AutomationCompatibleInterface.sol";
 
 /**
  * @title Sample Raffle Contract
@@ -34,14 +34,14 @@ import {AutomationCompatibleInterface} from "@chainlink/contracts/src/v0.8/inter
  */
 contract Raffle is VRFConsumerBaseV2 {
     // error
-    error Raffle__NotEnoughEthSent();
-    error Raffle__TransferFailed();
-    error Raffle__RaffleNotOpen();
-    error Raffle__UpkeepNotNeeded(
+     error Raffle__UpkeepNotNeeded(
         uint256 currentBalance,
         uint256 numPlayers,
         uint256 raffleState
     );
+    error Raffle__NotEnoughEthSent();
+    error Raffle__TransferFailed();
+    error Raffle__RaffleNotOpen();
     // Type declaration
 
     enum RaffleState {
@@ -114,10 +114,10 @@ contract Raffle is VRFConsumerBaseV2 {
         view
         returns (bool upkeepNeeded, bytes memory /* performData */)
     {
-        bool timeHasPassed = (block.timestamp - s_lastTimeStamp) >= i_interval;
         bool isOpen = RaffleState.OPEN == s_raffleState;
-        bool hasBalance = address(this).balance > 0;
+        bool timeHasPassed = (block.timestamp - s_lastTimeStamp) >= i_interval;
         bool hasPlayers = s_players.length > 0;
+        bool hasBalance = address(this).balance > 0;
         upkeepNeeded = (timeHasPassed && isOpen && hasBalance && hasPlayers);
         return (upkeepNeeded, "0x0"); // can we comment this out?
     }
@@ -136,7 +136,7 @@ contract Raffle is VRFConsumerBaseV2 {
             );
         }
         s_raffleState = RaffleState.CALCULATING; //
-        i_vrfCoordinator.requestRandomWords(
+        uint256 requestId = i_vrfCoordinator.requestRandomWords(
             i_gasLane,
             i_subscriptionId,
             REQUEST_CONFIRMATIONS,
@@ -146,8 +146,8 @@ contract Raffle is VRFConsumerBaseV2 {
     }
     // 1 Checks, 2 effects and 3 interactions
     function fulfillRandomWords(
-        uint256 /* requestId */,
-        uint256[] memory randomWords
+        uint256 _requestId,
+        uint256[] memory _randomWords
     ) internal override {
         // s_players size 10
         // randomNumber 202
@@ -155,7 +155,7 @@ contract Raffle is VRFConsumerBaseV2 {
         // 20 * 10 = 200
         // 2
         // 202 % 10 = 2
-        uint256 indexOfWinner = randomWords[0] % s_players.length;
+        uint256 indexOfWinner = _randomWords[0] % s_players.length;
         address payable winner = s_players[indexOfWinner];
         s_recentWinner = winner;
         s_players = new address payable[](0);
