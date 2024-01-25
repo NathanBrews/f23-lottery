@@ -105,7 +105,7 @@ contract Raffle is VRFConsumerBaseV2 {
             NUM_WORDS
         );
     }
-    // 1 Checks, 2 effects and 3 interactions
+    // Checks, effects and interactiona
     function fulfillRandomWords(
         uint256 _requestId,
         uint256[] memory _randomWords
@@ -122,13 +122,13 @@ contract Raffle is VRFConsumerBaseV2 {
         s_players = new address payable[](0);
         s_raffleState = RaffleState.OPEN;
         s_lastTimeStamp = block.timestamp;
-        emit PickedWinner(winner);
         (bool success, ) = winner.call{value: address(this).balance}("");
         // require(success, "Transfer failed");
         if (!success) {
             revert Raffle__TransferFailed();
         }
 
+        emit PickedWinner(winner);
         }
     /** Getter Function */
     function getEnteranceFee() external view returns(uint256){
