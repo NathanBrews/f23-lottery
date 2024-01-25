@@ -95,7 +95,7 @@ contract HelperConfig is Script {
             vrfCoordinatorV2: address(vrfCoordinatorV2Mock),
             gasLane: 0x474e34a077df58807dbe9c96d3c009b23b3c6d0cce433e59bbf5b34f823bc56c,
             subscriptionId: 0, // If left as 0, our scripts will create one!
-            callbackGasLimit: 500000 // 500,000 gas
+            callbackGasLimit: 500000, // 500,000 gas
             // link: 0x779877A7B0D9E8603169DdbD7836e478b4624789,
             // deployerKey: vm.envUint("PRIVATE_KEY")
             // link: address(link),

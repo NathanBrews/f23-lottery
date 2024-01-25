@@ -16,7 +16,7 @@ contract DeployRaffle is Script {
             address vrfCoordinatorV2,
             bytes32 gasLane,
             uint64 subscriptionId,
-            uint32 callbackGasLimit)
+            uint32 callbackGasLimit,)
          = helperConfig.activeNetworkConfig();
 
         vm.startBroadcast();
