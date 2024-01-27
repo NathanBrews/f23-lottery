@@ -72,6 +72,7 @@ contract HelperConfig is Script {
         if (activeNetworkConfig.vrfCoordinatorV2 != address(0)) {
             return activeNetworkConfig;
         }
+
         uint96 baseFee = 0.25 ether;
         uint96 gasPriceLink = 1e9;
 

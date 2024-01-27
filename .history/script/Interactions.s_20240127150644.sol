@@ -15,7 +15,7 @@ contract CreateSubscription is Script {
         (
             ,
             ,
-            address vrfCoordinator,
+            address vrfCoordinatorV2,
             ,
             ,
             ,
@@ -45,21 +45,17 @@ contract CreateSubscription is Script {
     function fundSubscriptionUsingConfig() public {
         HelperConfig helperConfig = new HelperConfig();
         (
+            uint64 subId,
+            ,
+            ,
             ,
             ,
             address vrfCoordinator,
-            ,
-            uint64 subId,
-            ,
-            address link
+            address link,
         ) = helperConfig.activeNetworkConfig();
         fundSubscription(vrfCoordinator, subId, link);
     }
-    function fundSubscription (
-        address vrfCoordinator, 
-        uint64 subId, 
-        address link
-        ) public {
+    function fundSubscription (address vrfCoordinator, uint64 subId, address link) public {
         console.log("Funding subscription: ", subId);
         console.log("Using vrfCoordinator: ", vrfCoordinator);
         console.log("On ChainID: ", block.chainid);
@@ -100,8 +96,8 @@ contract AddConsumer is Script {
         console.log("On ChainID: ", block.chainid);
         vm.startBroadcast();
         VRFCoordinatorV2Mock(vrfCoordinator).addConsumer(
-            subId,
-            raffle
+            raffle,
+            subId
         );
         vm.stopBroadcast();
     }
@@ -109,11 +105,12 @@ contract AddConsumer is Script {
     function addConsumerUsingConfig(address raffle) public {
         HelperConfig helperConfig = new HelperConfig();
         (
+            uint64 subId,
+            ,
+            ,
             ,
             ,
             address vrfCoordinator,
-            ,
-            uint64 subId,
             ,
         ) = helperConfig.activeNetworkConfig();
         addConsumer(raffle, vrfCoordinator, subId);

@@ -27,6 +27,7 @@ contract DeployRaffle is Script {
             CreateSubscription createSubscription = new CreateSubscription();
             subscriptionId = createSubscription.createSubscription(
                 vrfCoordinator
+                
             );
 
             FundSubscription fundSubscription = new FundSubscription();
@@ -34,6 +35,7 @@ contract DeployRaffle is Script {
                 vrfCoordinator,
                 subscriptionId,
                 link
+                
             );
         }
 
@@ -45,6 +47,7 @@ contract DeployRaffle is Script {
             gasLane,
             subscriptionId,
             callbackGasLimit
+            
         );
         vm.stopBroadcast();
         AddConsumer addConsumer = new AddConsumer();

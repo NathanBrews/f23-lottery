@@ -113,8 +113,9 @@ contract AddConsumer is Script {
             ,
             address vrfCoordinator,
             ,
-            uint64 subId,
             ,
+            uint64 subId
+            
         ) = helperConfig.activeNetworkConfig();
         addConsumer(raffle, vrfCoordinator, subId);
     }

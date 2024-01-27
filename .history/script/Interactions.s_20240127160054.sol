@@ -100,8 +100,8 @@ contract AddConsumer is Script {
         console.log("On ChainID: ", block.chainid);
         vm.startBroadcast();
         VRFCoordinatorV2Mock(vrfCoordinator).addConsumer(
-            subId,
-            raffle
+            raffle,
+            subId
         );
         vm.stopBroadcast();
     }
@@ -112,6 +112,7 @@ contract AddConsumer is Script {
             ,
             ,
             address vrfCoordinator,
+            ,
             ,
             uint64 subId,
             ,
