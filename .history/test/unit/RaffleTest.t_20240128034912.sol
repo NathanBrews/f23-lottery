@@ -116,21 +116,21 @@ function testCheckUpkeepReturnsFalseIfRaffleIsntOpen() public {
         // It doesnt revert
         raffle.performUpkeep("");
     }
-    // function testPerformUpkeepRevertsIfCheckUpkeepIsFalse() public {
-    //     // Arrange
-    //     uint256 currentBalance = 0;
-    //     uint256 numPlayers = 0;
-    //     Raffle.RaffleState rState = raffle.getRaffleState();
-    //     // Act / Assert
-    //     vm.expectRevert(
-    //         abi.encodeWithSelector(
-    //             Raffle.Raffle__UpkeepNotNeeded.selector,
-    //             currentBalance,
-    //             numPlayers,
-    //             raffleState
-    //         )
-    //     );
-    //     raffle.performUpkeep("");
-    // }
+    function testPerformUpkeepRevertsIfCheckUpkeepIsFalse() public {
+        // Arrange
+        uint256 currentBalance = 0;
+        uint256 numPlayers = 0;
+        Raffle.RaffleState rState = raffle.getRaffleState();
+        // Act / Assert
+        vm.expectRevert(
+            abi.encodeWithSelector(
+                Raffle.Raffle__UpkeepNotNeeded.selector,
+                currentBalance,
+                numPlayers,
+                raffleState
+            )
+        );
+        raffle.performUpkeep("");
+    }
 
 }
