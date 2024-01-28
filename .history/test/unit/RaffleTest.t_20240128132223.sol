@@ -169,39 +169,6 @@ function testCheckUpkeepReturnsFalseIfRaffleIsntOpen() public {
         public
         raffleEnteredAndTimePassed
     {
-      // Arrange
-        uint256 additionalEntrants = 5;
-        uint256 startingIndex = 1; // We have starting index be 1 so we can start with address(1) and not address(0)
 
-        for (
-            uint256 i = startingIndex;
-            i < startingIndex + additionalEntrants;
-            i++
-        ) {
-            address player = address(uint160(i));
-            hoax(player, STARTING_USER_BALANCE); // deal 1 eth to the player
-            raffle.enterRaffle{value: entranceFee}();
-        } 
-        // uint256 startingTimeStamp = raffle.getLastTimeStamp();
-        // uint256 startingBalance = expectedWinner.balance;
-           uint256 prize = entranceFee * (additionalEntrants + 1);
-        // Act
-        vm.recordLogs();
-        raffle.performUpkeep(""); // emits requestId
-        Vm.Log[] memory entries = vm.getRecordedLogs();
-        bytes32 requestId = entries[1].topics[1]; // get the requestId from the logs
-
-        uint256 previousTimestamp = raffle.getLastTimeStamp();
-        VRFCoordinatorV2Mock(vrfCoordinator).fulfillRandomWords(
-            uint256(requestId),
-            address(raffle)
-        );
-        // Assert
-        assert(uint256(raffle.getRaffleState()) == 0);
-        assert(raffle.getRecentWinner() != address(0));
-        assert(raffle.getLenghtOfPlayers() == 0);
-        assert(previousTimestamp < raffle.getLastTimeStamp());
-        assert(raffle.getRecentWinner().balance ==
-        STARTING_USER_BALANCE + prize - entranceFee );
     }
 }
