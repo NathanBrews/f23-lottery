@@ -6,7 +6,7 @@ import {DeployRaffle} from "../../script/DeployRaffle.s.sol";
 import {Raffle} from "../../src/Raffle.sol";
 import {HelperConfig} from "../../script/HelperConfig.s.sol";
 import {Test, console} from "forge-std/Test.sol";
-import {Vm} from "forge-std/Vm.sol";
+// import {Vm} from "forge-std/Vm.sol";
 // import {StdCheats} from "forge-std/StdCheats.sol";
 // import {VRFCoordinatorV2Mock} from "../mocks/VRFCoordinatorV2Mock.sol";
 // import {CreateSubscription} from "../../script/Interactions.s.sol";
@@ -127,33 +127,10 @@ function testCheckUpkeepReturnsFalseIfRaffleIsntOpen() public {
                 Raffle.Raffle__UpkeepNotNeeded.selector,
                 currentBalance,
                 numPlayers,
-                rState
+                raffleState
             )
         );
         raffle.performUpkeep("");
-    }
-    modifier raffleEnteredAndTimePassed() {
-        vm.prank(PLAYER);
-        raffle.enterRaffle{value: entranceFee}();
-        vm.warp(block.timestamp + interval + 1);
-        vm.roll(block.number + 1);
-        _;
-    }
-        function testPerformUpkeepUpdatesRaffleStateAndEmitsRequestId() 
-        public 
-        raffleEnteredAndTimePassed 
-        {
-        // Act
-        vm.recordLogs();
-        raffle.performUpkeep(""); // emits requestId
-        Vm.Log[] memory entries = vm.getRecordedLogs();
-        bytes32 requestId = entries[1].topics[1];
-
-        // Assert
-        Raffle.RaffleState rState = raffle.getRaffleState();
-        // requestId = raffle.getLastRequestId();
-        assert(uint256(requestId) > 0);
-        assert(uint256(rState) == 1); // 0 = open, 1 = calculating
     }
 
 }

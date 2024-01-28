@@ -127,7 +127,7 @@ function testCheckUpkeepReturnsFalseIfRaffleIsntOpen() public {
                 Raffle.Raffle__UpkeepNotNeeded.selector,
                 currentBalance,
                 numPlayers,
-                rState
+                raffleState
             )
         );
         raffle.performUpkeep("");
