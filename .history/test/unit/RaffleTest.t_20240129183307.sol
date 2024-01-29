@@ -155,16 +155,9 @@ function testCheckUpkeepReturnsFalseIfRaffleIsntOpen() public {
         assert(uint256(requestId) > 0);
         assert(uint256(rState) == 1); // 0 = open, 1 = calculating
     }
-    modifier skipFork (){
-        if (block.number != 31337){
-            return;
-        }
-        _;
-    }
     function testFulfillRandomWordsCanOnlyBeCalledAfterPerformUpkeep (
         uint256 randomRequestId
-    ) public raffleEnteredAndTimePassed skipFork
-    {
+    ) public raffleEnteredAndTimePassed{
         // Arrange
         vm.expectRevert("nonexistent request");
         VRFCoordinatorV2Mock(vrfCoordinator).fulfillRandomWords(
@@ -174,7 +167,7 @@ function testCheckUpkeepReturnsFalseIfRaffleIsntOpen() public {
     }
     function testFulfillRandomWordsPicksAWinnerResetsAndSendsMoney()
         public
-        raffleEnteredAndTimePassed skipFork
+        raffleEnteredAndTimePassed
     {
       // Arrange
         uint256 additionalEntrants = 5;

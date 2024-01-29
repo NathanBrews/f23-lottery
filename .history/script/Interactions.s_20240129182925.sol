@@ -20,16 +20,15 @@ contract CreateSubscription is Script {
             ,
             ,
             ,
-            uint256 deployerKey
         ) = helperConfig.activeNetworkConfig();
-        return createSubscription(vrfCoordinator, deployerKey);
+        return createSubscription(vrfCoordinator);
     }
     function createSubscription(
-        address vrfCoordinator,
-        uint256 deployerKey
+        address vrfCoordinator
+        
     ) public returns (uint64) {
         console.log("Creating subscription on chainId: ", block.chainid);
-        vm.startBroadcast(deployerKey);
+        vm.startBroadcast();
         uint64 subId = VRFCoordinatorV2Mock(vrfCoordinator)
             .createSubscription();
         vm.stopBroadcast();
@@ -54,22 +53,20 @@ contract CreateSubscription is Script {
             uint64 subId,
             ,
             address link,
-            uint256 deployerKey
 
         ) = helperConfig.activeNetworkConfig();
-        fundSubscription(vrfCoordinator, subId, link, deployerKey);
+        fundSubscription(vrfCoordinator, subId, link);
     }
     function fundSubscription (
         address vrfCoordinator, 
         uint64 subId, 
-        address link,
-        uint256 deployerKey
+        address link
         ) public {
         console.log("Funding subscription: ", subId);
         console.log("Using vrfCoordinator: ", vrfCoordinator);
         console.log("On ChainID: ", block.chainid);
            if (block.chainid == 31337) {
-            vm.startBroadcast(deployerKey);
+            vm.startBroadcast();
             VRFCoordinatorV2Mock(vrfCoordinator).fundSubscription(
                 subId,
                 FUND_AMOUNT
@@ -80,7 +77,7 @@ contract CreateSubscription is Script {
             console.log(msg.sender);
             console.log(LinkToken(link).balanceOf(address(this)));
             console.log(address(this));
-            vm.startBroadcast(deployerKey);
+            vm.startBroadcast();
             LinkToken(link).transferAndCall(
                 vrfCoordinator,
                 FUND_AMOUNT,
